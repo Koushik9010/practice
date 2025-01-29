@@ -4,11 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="script.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <link rel="stylesheet" href="./css/home.css" />
-    <title>All users</title>
+    <title>All Users</title>
   </head>
   <body>
-    <div class="display-div" id="display-users"></div>
-    <button onclick="fetchData()">Fetch Data</button>
+    <div class="container">
+      <!-- <h1>All Users</h1> -->
+      <table id="user-table">
+        <tbody id="display-users"></tbody>
+      </table>
+      <button onclick="fetchData()">Fetch Data</button>
+    </div>
   </body>
 </html>

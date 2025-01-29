@@ -1,48 +1,60 @@
 const displayDiv = document.getElementById("display-users");
 
-window.addEventListener("load", async () => {
-  let urlParams = new URLSearchParams(window.location.search);
-  if (urlParams) {
-    let id = urlParams.get("id");
-
-    if (!id) return;
-    try {
-      let result = await fetch("https://dummyjson.com/users/" + id);
-      let data = await result.json();
-      displayDiv.innerHTML = JSON.stringify(data);
-    } catch (error) {
-      alert(error.messaage);
-    }
-  }
-});
-
 const displayData = async (data) => {
-  // let data = await fetchData()
+  let tableMarkup = `
+          <thead>
+              <tr>
+                  <th>Number</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Details</th>
+              </tr>
+          </thead>
+          <tbody>
+  `;
 
-  data?.users.map((value, index) => {
-    let htmlMarkup = `
-            <div class="user-card" id="${index}">
-                <img src="${value.image}" />
-                <h3>${index + 1}. ${value.firstName} ${value.lastName}</h3>
-                <p>Age: ${value.age}</p>
-                <p>Email: ${value.email}</p>
-                <p>Phone: ${value.phone}</p><a href="./user.html?id=${value?.id}" target="_blank">See user details</a>
-            </div>
-        `;
+  data?.users.forEach((value, index) => {
+    tableMarkup += `
+          <tr>
+              <td>${index + 1}</td>
+              <td><img src=${value.image}></td>
+              <td>${value.firstName} ${value.lastName}</td>
+              <td>${value.age}</td>
+              <td>${value.email}</td>
+              <td>${value.phone}</td>
+              <td>
+                <button class="info-btn" data-user-id="${value.id}">
+                  <i class="fa-solid fa-info"></i>
+                </button>
+              </td>
+          </tr>
+      `;
+  });
 
-    displayDiv.insertAdjacentHTML("beforeend", htmlMarkup);
+  tableMarkup += `</tbody></table>`;
+  displayDiv.innerHTML = tableMarkup;
+
+  // Attach event listeners after inserting the table
+  document.querySelectorAll(".info-btn").forEach((button) => {
+    button.addEventListener("click", function () {
+      let userId = this.getAttribute("data-user-id");
+      window.open(`user.html?id=${userId}`, "_blank");
+    });
   });
 };
 
 const fetchData = async () => {
   try {
-    let result = await fetch("https://dummyjson.com/user", {
+    let result = await fetch("https://dummyjson.com/users", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
     let data = await result.json();
     displayData(data);
   } catch (error) {
-    alert(error.messaage);
+    alert(error.message);
   }
 };
